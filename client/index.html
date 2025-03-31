@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>AI 2048 Cutest</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">2048 Qst</h1>
+            <div class="scores-container">
+                <div class="score-box">
+                    Score <span id="current-score">0</span>
+                </div>
+                <div class="score-box">
+                    Best <span id="best-score">0</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="controls-info">
+             <button id="new-game-button" class="btn">New Game</button>
+             <p class="info-text">Join the numbers and get to the <strong>2048 tile!</strong><br>Use arrow keys or swipe.</p>
+        </div>
+
+
+        <main class="game-container">
+            <div class="grid-background">
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+            </div>
+            <div id="tile-container" class="tile-container">
+                </div>
+        </main>
+
+        <div id="results-overlay" class="overlay hidden">
+            <div class="results-box">
+                <h2 id="results-message">Game Over!</h2>
+                <p class="final-score">Your Score: <span id="final-score">0</span></p>
+
+                <div class="nickname-section">
+                    <p>Your Nickname:</p>
+                    <div class="nickname-display">
+                        <span id="nickname-text">Generating...</span>
+                        <button id="regenerate-nickname-btn" class="btn btn-small">🔄</button>
+                    </div>
+                    <button id="confirm-nickname-btn" class="btn btn-confirm">Confirm & Submit</button>
+                     <p id="nickname-saved-message" class="feedback-message hidden">Nickname saved!</p>
+                </div>
+
+                <div id="leaderboard-section" class="leaderboard-section">
+                    <h3>Leaderboard</h3>
+                    <div id="leaderboard-loading" class="loading-message">Loading...</div>
+                    <div id="leaderboard-error" class="error-message hidden"></div>
+                    <ol id="leaderboard-list"></ol>
+                </div>
+
+                <button id="play-again-btn" class="btn btn-play-again">Play Again</button>
+            </div>
+        </div>
+
+    </div> <script src="script.js" defer></script>
+</body>
+</html>

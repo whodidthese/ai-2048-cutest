@@ -1,0 +1,546 @@
+/* --- CSS Variables --- */
+:root {
+	--grid-size: min(85vw, 450px);
+	/* Game board size, responsive */
+	--grid-cells: 4;
+	/* Number of cells per row/column */
+	--gap-size: calc(var(--grid-size) * 0.03);
+	/* Gap between cells */
+	--cell-size: calc((var(--grid-size) - (var(--gap-size) * (var(--grid-cells) + 1))) / var(--grid-cells));
+	/* Calculated cell size */
+
+	/* Cute Pastel Color Palette (Examples - Can be customized) */
+	--bg-color: #FFF0F5;
+	/* Lavender Blush - Page background */
+	--grid-bg-color: #D8BFD8;
+	/* Thistle - Grid background */
+	--cell-bg-color: #E6E6FA;
+	/* Lavender - Empty cell background */
+	--text-color-dark: #4B0082;
+	/* Indigo - Dark text */
+	--text-color-light: #f9f6f2;
+	/* Light text for darker tiles */
+	--score-box-bg: #DDA0DD;
+	/* Plum */
+	--button-bg: #FFB6C1;
+	/* Light Pink */
+	--button-hover-bg: #FFC0CB;
+	/* Pink */
+	--button-text-color: var(--text-color-dark);
+	--overlay-bg: rgba(230, 230, 250, 0.85);
+	/* Lavender semi-transparent overlay */
+	--results-box-bg: #FFFACD;
+	/* Lemon Chiffon */
+
+	/* Tile Colors (Add more as needed for higher values) */
+	--tile-2-bg: #EEE4DA;
+	--tile-4-bg: #EDE0C8;
+	--tile-8-bg: #F2B179;
+	--tile-16-bg: #F59563;
+	--tile-32-bg: #F67C5F;
+	--tile-64-bg: #F65E3B;
+	--tile-128-bg: #EDCF72;
+	--tile-256-bg: #EDCC61;
+	--tile-512-bg: #EDC850;
+	--tile-1024-bg: #EDC53F;
+	--tile-2048-bg: #EDC22E;
+	--tile-super-bg: #3c3a32;
+	/* For tiles > 2048 */
+
+	/* Font */
+	--font-family: 'Quicksand', sans-serif;
+	--base-font-size: 16px;
+	/* Base font size for scaling */
+}
+
+/* --- Basic Reset & Body --- */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	font-size: var(--base-font-size);
+}
+
+body {
+	font-family: var(--font-family);
+	background-color: var(--bg-color);
+	color: var(--text-color-dark);
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	/* Align top */
+	min-height: 100vh;
+	padding: var(--gap-size);
+	overscroll-behavior-y: contain;
+	/* Prevent pull-to-refresh */
+	touch-action: manipulation;
+	/* Improve touch responsiveness */
+}
+
+/* --- Main Layout Container --- */
+.container {
+	width: 100%;
+	max-width: var(--grid-size);
+	/* Limit width on larger screens */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+/* --- Header --- */
+.header {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: var(--gap-size);
+}
+
+.title {
+	font-size: clamp(2rem, 10vw, 3rem);
+	/* Responsive font size */
+	font-weight: 700;
+	color: var(--text-color-dark);
+}
+
+.scores-container {
+	display: flex;
+	gap: calc(var(--gap-size) / 2);
+}
+
+.score-box {
+	background-color: var(--score-box-bg);
+	padding: calc(var(--gap-size) / 2) var(--gap-size);
+	border-radius: calc(var(--gap-size) / 3);
+	font-size: clamp(0.8rem, 4vw, 1rem);
+	font-weight: 500;
+	text-align: center;
+	min-width: 60px;
+	/* Ensure minimum width */
+}
+
+.score-box span {
+	display: block;
+	font-size: clamp(1rem, 5vw, 1.5rem);
+	font-weight: 700;
+}
+
+/* --- Controls & Info --- */
+.controls-info {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: var(--gap-size);
+	flex-wrap: wrap;
+	/* Allow wrapping on small screens */
+	gap: calc(var(--gap-size) / 2);
+}
+
+.info-text {
+	font-size: clamp(0.8rem, 3.5vw, 0.9rem);
+	line-height: 1.4;
+	flex-basis: 60%;
+	/* Allow text to take more space */
+	text-align: right;
+}
+
+/* --- Buttons --- */
+.btn {
+	padding: calc(var(--gap-size) / 1.5) var(--gap-size);
+	background-color: var(--button-bg);
+	color: var(--button-text-color);
+	border: none;
+	border-radius: calc(var(--gap-size) / 3);
+	font-family: inherit;
+	font-weight: 700;
+	font-size: clamp(0.9rem, 4vw, 1rem);
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+}
+
+.btn:hover,
+.btn:focus {
+	background-color: var(--button-hover-bg);
+	outline: none;
+}
+
+.btn-small {
+	padding: calc(var(--gap-size) / 3);
+	font-size: clamp(1rem, 4vw, 1.2rem);
+	line-height: 1;
+	/* Adjust for emoji centering */
+}
+
+.btn-confirm {
+	background-color: #90EE90;
+	/* Light Green */
+}
+
+.btn-confirm:hover {
+	background-color: #76d976;
+}
+
+.btn-play-again {
+	margin-top: var(--gap-size);
+	width: 100%;
+	/* Make Play Again button full width */
+}
+
+/* --- Game Container & Grid --- */
+.game-container {
+	width: var(--grid-size);
+	height: var(--grid-size);
+	position: relative;
+	/* For positioning tiles */
+	margin-top: var(--gap-size);
+}
+
+.grid-background,
+.tile-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: var(--grid-bg-color);
+	border-radius: calc(var(--gap-size) / 2);
+	padding: var(--gap-size);
+	display: grid;
+	grid-template-columns: repeat(var(--grid-cells), var(--cell-size));
+	grid-template-rows: repeat(var(--grid-cells), var(--cell-size));
+	gap: var(--gap-size);
+}
+
+.grid-cell {
+	background-color: var(--cell-bg-color);
+	border-radius: calc(var(--gap-size) / 3);
+}
+
+.tile-container {
+	/* Tile container is transparent, just holds the tiles */
+	background-color: transparent;
+	z-index: 2;
+	/* Ensure tiles are above the background grid */
+	grid-template-columns: repeat(var(--grid-cells), 1fr);
+	/* Use fractions for positioning reference */
+	grid-template-rows: repeat(var(--grid-cells), 1fr);
+}
+
+/* --- Tiles (Basic Styling & Positioning Placeholder) --- */
+.tile {
+	position: absolute;
+	/* Tiles are absolutely positioned */
+	width: var(--cell-size);
+	height: var(--cell-size);
+	border-radius: calc(var(--gap-size) / 3);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: 700;
+	font-size: clamp(1rem, calc(var(--cell-size) / 3), 2.5rem);
+	/* Responsive font size */
+	background-color: var(--tile-2-bg);
+	/* Default to '2' tile color */
+	color: var(--text-color-dark);
+
+	/* IMPORTANT: Transition for movement animations */
+	transition: transform 100ms ease-in-out;
+
+	/* Will be set by JavaScript to position the tile */
+	/* transform: translate(var(--x), var(--y)); */
+	/* --x and --y will be calculated based on grid position */
+
+	/* Prevent text selection on tiles */
+	user-select: none;
+}
+
+/* --- Tile Color Variations (Add more as needed) --- */
+.tile-2 {
+	background-color: var(--tile-2-bg);
+	color: var(--text-color-dark);
+}
+
+.tile-4 {
+	background-color: var(--tile-4-bg);
+	color: var(--text-color-dark);
+}
+
+.tile-8 {
+	background-color: var(--tile-8-bg);
+	color: var(--text-color-light);
+}
+
+.tile-16 {
+	background-color: var(--tile-16-bg);
+	color: var(--text-color-light);
+}
+
+.tile-32 {
+	background-color: var(--tile-32-bg);
+	color: var(--text-color-light);
+}
+
+.tile-64 {
+	background-color: var(--tile-64-bg);
+	color: var(--text-color-light);
+}
+
+.tile-128,
+.tile-256,
+.tile-512,
+.tile-1024,
+.tile-2048 {
+	background-color: var(--tile-128-bg);
+	color: var(--text-color-light);
+	font-size: clamp(0.9rem, calc(var(--cell-size) / 3.5), 2.2rem);
+	/* Slightly smaller font for larger numbers */
+}
+
+.tile-256 {
+	background-color: var(--tile-256-bg);
+}
+
+.tile-512 {
+	background-color: var(--tile-512-bg);
+}
+
+.tile-1024 {
+	background-color: var(--tile-1024-bg);
+}
+
+.tile-2048 {
+	background-color: var(--tile-2048-bg);
+}
+
+/* Tiles higher than 2048 */
+.tile-super {
+	background-color: var(--tile-super-bg);
+	color: var(--text-color-light);
+	font-size: clamp(0.8rem, calc(var(--cell-size) / 4), 2rem);
+}
+
+
+/* --- Results Overlay --- */
+.overlay {
+	position: fixed;
+	/* Cover the whole screen */
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: var(--overlay-bg);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 100;
+	/* Ensure it's on top */
+	padding: var(--gap-size);
+	opacity: 1;
+	visibility: visible;
+	transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.overlay.hidden {
+	opacity: 0;
+	visibility: hidden;
+}
+
+.results-box {
+	background-color: var(--results-box-bg);
+	padding: calc(var(--gap-size) * 1.5);
+	border-radius: var(--gap-size);
+	text-align: center;
+	max-width: 90%;
+	width: calc(var(--grid-size) * 0.9);
+	/* Slightly smaller than game grid */
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.results-box h2 {
+	margin-bottom: calc(var(--gap-size) / 2);
+	font-size: clamp(1.5rem, 7vw, 2rem);
+}
+
+.final-score {
+	font-size: clamp(1.1rem, 5vw, 1.3rem);
+	margin-bottom: var(--gap-size);
+}
+
+.final-score span {
+	font-weight: 700;
+}
+
+
+/* --- Nickname Section --- */
+.nickname-section {
+	margin-bottom: var(--gap-size);
+	border-top: 1px solid var(--grid-bg-color);
+	border-bottom: 1px solid var(--grid-bg-color);
+	padding: var(--gap-size) 0;
+}
+
+.nickname-display {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: calc(var(--gap-size) / 2);
+	margin: calc(var(--gap-size) / 3) 0 var(--gap-size);
+}
+
+#nickname-text {
+	font-weight: 500;
+	font-size: clamp(1rem, 5vw, 1.2rem);
+	background-color: rgba(255, 255, 255, 0.5);
+	padding: calc(var(--gap-size)/4) calc(var(--gap-size)/2);
+	border-radius: calc(var(--gap-size)/4);
+	min-height: 1.5em;
+	/* Prevent layout shift while generating */
+}
+
+.feedback-message {
+	font-size: 0.8rem;
+	color: green;
+	margin-top: calc(var(--gap-size) / 3);
+}
+
+.feedback-message.hidden {
+	display: none;
+}
+
+
+/* --- Leaderboard Section --- */
+.leaderboard-section {
+	margin-top: var(--gap-size);
+	text-align: left;
+}
+
+.leaderboard-section h3 {
+	text-align: center;
+	margin-bottom: calc(var(--gap-size) / 2);
+}
+
+#leaderboard-list {
+	list-style-position: inside;
+	padding-left: 0;
+	/* Remove default padding */
+	max-height: 150px;
+	/* Limit height and allow scrolling if needed */
+	overflow-y: auto;
+	font-size: clamp(0.9rem, 4vw, 1rem);
+}
+
+#leaderboard-list li {
+	padding: calc(var(--gap-size) / 4) 0;
+	border-bottom: 1px dashed var(--grid-bg-color);
+	display: flex;
+	justify-content: space-between;
+}
+
+#leaderboard-list li:last-child {
+	border-bottom: none;
+}
+
+#leaderboard-list span {
+	font-weight: 500;
+}
+
+#leaderboard-list .nickname {
+	flex-grow: 1;
+	/* Allow nickname to take available space */
+	margin: 0 calc(var(--gap-size)/2);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+
+.loading-message,
+.error-message {
+	text-align: center;
+	padding: var(--gap-size);
+	font-style: italic;
+}
+
+.error-message {
+	color: #DC143C;
+	/* Crimson */
+}
+
+.error-message.hidden {
+	display: none;
+}
+
+/* --- Helper class --- */
+.hidden {
+	display: none !important;
+	/* Use important to override other display properties if needed */
+}
+
+/* --- Media Queries for Adjustments (Example) --- */
+@media (max-width: 320px) {
+
+	/* Fine-tune for very small screens if necessary */
+	:root {
+		--base-font-size: 14px;
+	}
+
+	.title {
+		font-size: 1.8rem;
+	}
+}
+
+/* Add these keyframes somewhere in your style.css */
+@keyframes spawnEffect {
+	from {
+		transform: scale(0);
+		opacity: 0;
+	}
+
+	to {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+@keyframes mergeEffect {
+
+	0%,
+	100% {
+		transform: scale(1);
+	}
+
+	50% {
+		transform: scale(1.15);
+		/* Slightly larger pulse */
+	}
+}
+
+/* Modify the .tile rule slightly if needed, ensure transform-origin is center */
+.tile {
+	/* ... existing styles ... */
+	position: absolute;
+	/* ... */
+	transform-origin: center center;
+	/* Helps scaling animation */
+	transition: top 100ms ease-in-out, left 100ms ease-in-out, background-color 100ms linear;
+	/* Adjusted transition */
+}
+
+
+/* Add these new rules for animation classes */
+.tile-new {
+	animation: spawnEffect 200ms ease-out;
+}
+
+.tile-merged {
+	/* Apply merge pulse animation */
+	animation: mergeEffect 200ms ease-in-out;
+	/* Keep track of merged tiles visually slightly longer? Optional */
+	/* z-index: 10; */
+}
