@@ -53,6 +53,11 @@ app.use(cors());
 // Enable parsing of JSON request bodies
 app.use(express.json());
 
+// Serve static files from client directory if HTTP_CLIENT is enabled
+if (process.env.HTTP_CLIENT === '1') {
+	console.log('HTTP_CLIENT is enabled, serving static files from ../client');
+	app.use(express.static('../client'));
+}
 
 // --- API Routes ---
 
