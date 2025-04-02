@@ -28,6 +28,15 @@ A cute, mobile-friendly implementation of the classic 2048 puzzle game with past
 * **Database:**
     * SQLite
 
+
+## Demo & Screenshots
+
+Play demo: [AI-2048_Cutest](https://ai-2048-cutest.talkingsource.com/)
+
+![Game Play](/doc/ss_gameplay.png)
+
+![Leaderboard](/doc/ss_leaderboard.png)
+
 ## 📂 File Structure
 
 The project is organized into two main directories:
@@ -98,12 +107,6 @@ ai-2048-cutest/
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 
 This project is licensed under the **ISC License**. See the [LICENSE](LICENSE) file for details.
-
-## Screenshots
-
-![Game Play](/doc/ss_gameplay.png)
-
-![Leaderboard](/doc/ss_leaderboard.png)
 
 ## 👤 Author
 
